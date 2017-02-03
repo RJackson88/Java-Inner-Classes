@@ -9,60 +9,42 @@ import static org.junit.Assert.*;
  */
 public class ConnectionManagerTest {
     private ConnectionManager cm;
-    private ConnectionManager.ManagedConnection mc;
-    
+    private String conn;
+
     @Before
     public void setUp() {
         cm = new ConnectionManager();
-        mc = cm.new ManagedConnection("", 0, "");
+        conn = cm.buildConnection("127.0.1.1", 8000, "HTTP");
+    }
+
+    @Test
+    public void buildConnectionTest() {
+        String expected = "Connected to 127.0.0.1:8000 via HTTP.";
+        String actual = cm.buildConnection("127.0.0.1", 8000, "HTTP");
+        assertEquals(String.format("I expected the result to be: %s", expected),
+                expected, actual);
+    }
+    
+    @Test
+    public void getConnectionByAddressTest() {
+        Connection expected = null;
+        Connection actual = cm.getConnectionByAddress("127.0.0.1");
+        assertEquals(String.format("I expected the result to be: %s", expected),
+                expected, actual);
     }
     
     @Test
     public void checkMaxTest() {
-        boolean expected = false;
+        boolean expected = true;
         boolean actual = cm.checkMax();
         assertEquals(String.format("I expected the result to be: %s", expected),
                 expected, actual);
     }
     
-//    @Test
-//    public void buildConnectionTest() {
-//        ConnectionManager.ManagedConnection expected = cm.new
-//                ManagedConnection("", 0, "");
-//        ConnectionManager.ManagedConnection actual = cm.buildConnection("",
-//                "");
-//        assertEquals(String.format("I expected the result to be: %s", expected),
-//                expected, actual);
-//    }
-    
     @Test
-    public void connectTest() {
-        String expected = "";
-        String actual = mc.connect();
-        assertEquals(String.format("I expected the result to be: %s", expected),
-                expected, actual);
-    }
-    
-    @Test
-    public void getIPTest() {
-        String expected = "";
-        String actual = mc.getIP();
-        assertEquals(String.format("I expected the result to be: %s", expected),
-                expected, actual);
-    }
-    
-    @Test
-    public void getPortTest() {
-        int expected = 0;
-        int actual = mc.getPort();
-        assertEquals(String.format("I expected the result to be: %s", expected),
-                expected, actual);
-    }
-    
-    @Test
-    public void getProtocol() {
-        String expected = "";
-        String actual = mc.getProtocol();
+    public void checkIfOpenTest() {
+        boolean expected = true;
+        boolean actual = cm.checkIfOpen("127.0.0.1");
         assertEquals(String.format("I expected the result to be: %s", expected),
                 expected, actual);
     }

@@ -7,11 +7,13 @@ import java.io.Closeable;
  */
 interface Connection extends Closeable {
     
-    String connect();
+    void connect();
     
-    String getIP();
+    String getAddress();
     
     int getPort();
     
     String getProtocol();
+    
+    void close();
 }
